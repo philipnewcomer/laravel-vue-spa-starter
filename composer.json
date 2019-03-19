@@ -1,10 +1,14 @@
 {
-    "name": "laravel/laravel",
+    "name": "philipnewcomer/laravel-vue-spa-starter",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "A Laravel/Vue SPA Starter Template.",
     "keywords": [
         "framework",
-        "laravel"
+        "laravel",
+        "spa",
+        "starter",
+        "template",
+        "vue"
     ],
     "license": "MIT",
     "require": {
