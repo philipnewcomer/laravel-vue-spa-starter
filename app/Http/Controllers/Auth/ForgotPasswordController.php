@@ -2,31 +2,38 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Password Reset Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password reset emails and
-    | includes a trait which assists in sending these notifications from
-    | your application to your users. Feel free to explore this trait.
-    |
-    */
-
     use SendsPasswordResetEmails;
 
     /**
-     * Create a new controller instance.
+     * Get the response for a successful password reset link.
      *
-     * @return void
+     * @param  \Illuminate\Http\Request $request
+     * @param  string  $response
+     * @return JsonResponse
      */
-    public function __construct()
+    protected function sendResetLinkResponse(Request $request, $response)
     {
-        $this->middleware('guest');
+        return jsend_success();
+    }
+
+    /**
+     * Get the response for a failed password reset link.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  string  $response
+     * @return JsonResponse
+     */
+    protected function sendResetLinkFailedResponse(Request $request, $response)
+    {
+        return jsend_fail([
+            'email' => [trans($response)]
+        ]);
     }
 }

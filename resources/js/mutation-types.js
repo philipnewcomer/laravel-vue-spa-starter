@@ -1,0 +1,4 @@
+export default {
+  SET_STATUS: 'SET_STATUS',
+  CLEAR_STATUS: 'CLEAR_STATUS'
+}

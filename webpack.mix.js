@@ -15,10 +15,12 @@ require('laravel-mix-purgecss');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+   .extract()
+   .sourceMaps()
    .postCss('resources/css/app.css', 'public/css')
    .tailwind()
    .purgeCss();
 
 if (mix.inProduction()) {
-  mix.version();
+    mix.version();
 }
