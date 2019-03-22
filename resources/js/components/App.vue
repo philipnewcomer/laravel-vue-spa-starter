@@ -25,7 +25,9 @@
         </nav>
 
         <div class="container mx-auto">
-            <router-view></router-view>
+            <div class="spinner mt-24 mx-auto" v-show="!$auth.ready()"></div>
+
+            <router-view v-show="$auth.ready()"></router-view>
         </div>
     </div>
 </template>
