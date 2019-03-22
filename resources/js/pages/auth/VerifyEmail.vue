@@ -14,14 +14,14 @@
 
       data() {
         return {
-          user: null,
+          userId: null,
           expires: null,
           signature: null,
         }
       },
 
       created() {
-        this.user = this.$route.params.user
+        this.userId = this.$auth.user().id
         this.expires = this.$route.query.expires
         this.signature = this.$route.query.signature
 
@@ -29,27 +29,29 @@
       },
 
       mounted() {
-        this.axios.post('auth/verifyEmail/' + this.user, {}, {
-          params: {
-            expires: this.expires,
-            signature: this.signature
-          }
+        this.axios.post('auth/verifyEmail/' + this.userId, {
+          expires: this.expires,
+          signature: this.signature
         })
         .then(
           () => {
-            this.setStatus('Your email has been verified successfully.')
+            const callback = () => {
+              this.$router.push({name: 'home'})
+              this.setStatus('Your email has been verified successfully.')
+            }
 
             if (this.$auth.check()) {
               this.$auth.fetch()
+                .then(callback)
+            } else {
+              callback()
             }
           },
           (error) => {
-            let message = 'An error occurred.'
-            if (error.response.data.message) {
-              message = 'Error: ' + error.response.data.message
+            const errors = this.parseErrors(error)
+            if (errors.message) {
+              this.setStatus(errors.message, 'error')
             }
-
-            this.setStatus(message, 'error')
           }
         )
       }

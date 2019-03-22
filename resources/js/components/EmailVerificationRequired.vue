@@ -36,7 +36,7 @@
       methods: {
         resendVerificationEmail() {
           this.submitting = true
-          this.$store.dispatch('clearStatus')
+          this.clearStatus()
 
           this.axios.post('auth/resendVerificationEmail')
           .then(
@@ -44,8 +44,12 @@
               this.submitting = false
               this.setStatus('A fresh verification link has been sent to your email address.')
             },
-            () => {
+            (error) => {
               this.submitting = false
+              const errors = this.parseErrors(error)
+              if (errors.message) {
+                this.setStatus(errors.message, 'error')
+              }
             }
           )
         }

@@ -48,7 +48,7 @@ class AuthServiceProvider extends ServiceProvider
 
             $emailVerificationUrl = str_replace(
                 route('verification.verify', $notifiable->getKey()),
-                url('/verifyEmail', $notifiable->getKey()),
+                url('/verifyEmail'),
                 $apiVerificationUrl
             );
 

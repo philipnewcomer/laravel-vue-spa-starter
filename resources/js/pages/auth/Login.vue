@@ -118,6 +118,7 @@
             this.errors = error.response.data.data
             this.submitting = false
           },
+          redirect: this.$auth.redirect() ? this.$auth.redirect().from : {name: 'home'},
           rememberMe: this.rememberMe
         })
       }

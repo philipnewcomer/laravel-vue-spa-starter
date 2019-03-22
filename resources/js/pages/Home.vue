@@ -6,19 +6,19 @@
             </div>
         </div>
 
-        <div class="flex flex-wrap justify-center" v-if="!this.$auth.user().email_verified_at">
+        <div class="flex flex-wrap justify-center" v-if="!isUserEmailVerified">
             <div class="w-full max-w-sm">
-                <email-verification></email-verification>
+                <email-verification-required></email-verification-required>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-  import EmailVerification from '../components/EmailVerification'
+  import EmailVerificationRequired from '../components/EmailVerificationRequired'
   import Status from '../components/Status'
 
   export default {
-    components: { EmailVerification, Status }
+    components: { EmailVerificationRequired, Status },
   }
 </script>

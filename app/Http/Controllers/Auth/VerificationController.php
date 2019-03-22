@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class VerificationController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1');
     }
 
     /**
@@ -22,6 +21,7 @@ class VerificationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return \Illuminate\Http\Response
      */
     public function verify(Request $request)
     {
@@ -29,8 +29,15 @@ class VerificationController extends Controller
             throw new AuthorizationException();
         }
 
+        $request->query->set('expires', $request->json('expires'));
+        $request->query->set('signature', $request->json('signature'));
+
+        if (! URL::hasValidSignature($request)) {
+            return jsend_fail(['message' => 'Invalid signature.']);
+        }
+
         if ($request->user()->hasVerifiedEmail()) {
-            return jsend_success();
+            return jsend_fail(['message' => 'Your email has already been verified.']);
         }
 
         if ($request->user()->markEmailAsVerified()) {
@@ -49,7 +56,7 @@ class VerificationController extends Controller
     public function resend(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return jsend_success();
+            return jsend_fail(['message' => 'Your email has already been verified.']);
         }
 
         $request->user()->sendEmailVerificationNotification();

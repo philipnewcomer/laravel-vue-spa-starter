@@ -55,9 +55,12 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/verifyEmail/:user',
+      path: '/verifyEmail',
       name: 'verifyEmail',
-      component: VerifyEmail
+      component: VerifyEmail,
+      meta: {
+        auth: true
+      }
     },
     {
       path: '*',
