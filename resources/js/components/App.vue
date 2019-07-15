@@ -16,7 +16,7 @@
                         <a href="#"
                            class="no-underline hover:underline text-grey-lightest text-sm p-3"
                            v-if="$auth.check()"
-                           @click.prevent="handleLogout">
+                           @click.prevent="logout">
                             Logout
                         </a>
                     </div>
@@ -25,34 +25,55 @@
         </nav>
 
         <div class="container mx-auto">
-            <div class="spinner mt-24 mx-auto" v-show="!$auth.ready()"></div>
+            <status></status>
 
-            <router-view v-show="$auth.ready()"></router-view>
+            <div class="spinner mt-24 mx-auto" v-show="loading"></div>
+
+            <div v-show="$auth.ready() && loaded">
+                <email-verification-required v-if="showEmailVerificationRequired"></email-verification-required>
+                <router-view v-else></router-view>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import config from '../config'
+    import EmailVerificationRequired from '../components/EmailVerificationRequired'
+    import Status from '../components/Status'
 
     export default {
+      components: {
+        EmailVerificationRequired,
+        Status
+      },
+
       computed: {
-        appName() {
-          return config.APP_NAME
+        showEmailVerificationRequired() {
+          return this.$route.meta.requiresVerifiedEmail && !this.$auth.user().verified
         }
       },
 
       methods: {
-        handleLogout() {
+        logout() {
+          this.clearStatus()
+          this.setLoading()
+
           this.$auth.logout({
             makeRequest: true,
             success: () => {
               this.$router.push({name: 'login'})
+              this.clearLoading()
               this.setStatus('You are now logged out.')
             },
             redirect: false
           })
-        }
+        },
+      },
+
+      created() {
+        this.$auth.ready(() => {
+          this.clearLoading()
+        })
       }
     }
 </script>

@@ -1,16 +1,29 @@
+import config from './config'
 import store from './store'
 import Vue from 'vue'
 
 Vue.mixin({
   computed: {
-    isUserEmailVerified() {
-      return !!this.$auth.user().email_verified_at
+    appName() {
+      return config.APP_NAME
+    },
+
+    loaded() {
+      return !store.state.loading
+    },
+
+    loading() {
+      return store.state.loading;
     }
   },
 
   methods: {
-    clearStatus() {
-      store.dispatch('clearStatus')
+    setLoading() {
+      store.dispatch('setLoading')
+    },
+
+    clearLoading() {
+      store.dispatch('clearLoading')
     },
 
     setStatus(message, type) {
@@ -26,12 +39,16 @@ Vue.mixin({
       store.dispatch('setStatus', {status})
     },
 
-    parseErrors(error) {
-      if ('error' === error.response.data.status) {
-        return {message: error.response.data.message}
-      }
+    clearStatus() {
+      store.dispatch('clearStatus')
+    },
 
-      return error.response.data.data
+    handleError(error) {
+      const errorMessage = error.response.data.data.message
+        ? error.response.data.data.message
+        : error.response.data.data
+
+      this.setStatus(errorMessage, 'error')
     }
   }
 })

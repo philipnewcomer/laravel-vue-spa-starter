@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -76,7 +77,7 @@ class LoginController extends Controller
      */
     public function user(Request $request)
     {
-        return jsend_success(auth()->user());
+        return jsend_success(new UserResource($request->user()));
     }
 
     /**

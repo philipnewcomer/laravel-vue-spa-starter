@@ -28,6 +28,7 @@ const router = new VueRouter({
       component: Home,
       meta: {
         auth: true,
+        requiresVerifiedEmail: true
       }
     },
     {
@@ -70,10 +71,13 @@ const router = new VueRouter({
   ]
 })
 
-router.afterEach((to, from) => {
+router.beforeEach((to, from, next) => {
+
   if (store.state.status) {
     store.dispatch('clearStatus')
   }
+
+  next()
 })
 
 export default router

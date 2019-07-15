@@ -1,10 +1,14 @@
 <template>
-    <div
-        class="text-sm border border-t-8 rounded px-3 py-4 mb-4"
-        :class="['text-' + color + '-darker', 'border-' + color + '-dark', 'bg-' + color + '-lightest']"
-        role="alert"
-        v-if="message">
-            {{ message }}
+    <div class="flex flex-wrap justify-center">
+        <div class="w-full max-w-sm">
+            <div
+                class="text-sm border border-t-8 rounded px-3 py-4 mb-4"
+                :class="['text-' + color + '-darker', 'border-' + color + '-dark', 'bg-' + color + '-lightest']"
+                role="alert"
+                v-if="message">
+                    {{ message }}
+            </div>
+        </div>
     </div>
 </template>
 
