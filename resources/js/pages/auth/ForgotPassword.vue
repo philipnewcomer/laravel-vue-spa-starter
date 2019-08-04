@@ -62,7 +62,7 @@
           this.errors = {}
           this.submitting = true
 
-          this.axios.post('user/forgotPassword', {
+          this.axios.post('auth/forgotPassword', {
             email: this.email
           })
           .then(

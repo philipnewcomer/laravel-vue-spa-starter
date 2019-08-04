@@ -97,7 +97,7 @@
           this.errors = {}
           this.submitting = true
 
-          this.axios.post('user/resetPassword', {
+          this.axios.post('auth/resetPassword', {
             email: this.email,
             password: this.password,
             password_confirmation: this.passwordConfirmation,
